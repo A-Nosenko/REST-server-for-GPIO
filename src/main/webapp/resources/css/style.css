@@ -1,0 +1,89 @@
+body {
+
+    background-color: rgb(33, 50, 77);
+    color: whitesmoke;
+    margin: 1em;
+    padding: 0;
+}
+
+span.error {
+    color: darkred;
+}
+
+
+h1 {
+    color: whitesmoke;
+    font-size: 3em;
+}
+
+h2 {
+    color: whitesmoke;
+    font-size: 2em;
+}
+
+h3 {
+    color: whitesmoke;
+    font-size: 1.25em;
+}
+
+h4 {
+    color: whitesmoke;
+    font-size: 3em;
+}
+
+h6 {
+    color: whitesmoke;
+    font-size: .7em;
+}
+
+strong {
+    font-style: italic;
+    text-transform: uppercase;
+}
+
+li {
+    color: whitesmoke;
+    font-style: italic;
+}
+
+table {
+    table-layout: fixed;
+    word-wrap: break-word;
+    background-color: rgb(33, 50, 77);
+}
+
+td {
+    vertical-align: middle;
+}
+
+button.button_reduced {
+    font-size: 90%;
+    font-weight: 700;
+    color: whitesmoke;
+    padding: .5em 1em;
+    outline: none;
+    background: linear-gradient(rgb(30, 50, 77), rgb(30, 60, 40)) rgb(110, 112, 120);
+    box-shadow: 0 1px rgba(255, 255, 255, .2) inset,
+    0 3px 5px rgba(0, 1, 6, .5),
+    0 0 1px 1px rgba(0, 1, 6, .2);
+    transition: .2s ease-in-out;
+}
+
+button.button {
+    min-width: 180px;
+    min-height: 50px;
+    position: relative;
+    display: inline-block;
+    font-size: 90%;
+    font-weight: 700;
+    color: whitesmoke;
+    text-decoration: none;
+    text-shadow: 0 -1px 2px rgba(0, 0, 0, .2);
+    padding: .5em 1em;
+    outline: none;
+    background: linear-gradient(rgb(30, 50, 77), rgb(30, 60, 40)) rgb(110, 112, 120);
+    box-shadow: 0 1px rgba(255, 255, 255, .2) inset,
+    0 3px 5px rgba(0, 1, 6, .5),
+    0 0 1px 1px rgba(0, 1, 6, .2);
+    transition: .2s ease-in-out;
+}

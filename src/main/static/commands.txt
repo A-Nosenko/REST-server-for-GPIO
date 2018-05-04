@@ -1,0 +1,3 @@
+sudo apt-get remove pi4j
+sudo apt-get update
+sudo apt-get install pi4j
