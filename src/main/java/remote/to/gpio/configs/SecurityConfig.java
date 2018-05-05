@@ -40,8 +40,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         return new UserDetailsServiceImpl();
     }
 
+    @Bean
+    AuthenticationEntryPoint authenticationEntryPoint(){
+        return new AuthenticationEntryPoint();
+    }
+
     @Autowired
     private UserDetailsService userDetailsService;
+
+    @Autowired
+    private AuthenticationEntryPoint authenticationEntryPoint;
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
@@ -51,10 +59,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/resources/**").permitAll()
                 .anyRequest().authenticated()
+                .and().httpBasic()
+                .authenticationEntryPoint(authenticationEntryPoint)
                 .and()
                 .formLogin().loginPage("/login").permitAll()
                 .and()
