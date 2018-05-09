@@ -1,6 +1,6 @@
 package remote.to.gpio.services.relay;
 
-import remote.to.gpio.models.relay.Relay;
+import remote.to.gpio.models.relay.RelayReport;
 
 import java.util.List;
 
@@ -9,7 +9,7 @@ import java.util.List;
  * @version 1.0 4/21/2018.
  */
 public interface RelaysService {
-    List<Relay> getRelays();
+    List<RelayReport> getRelays();
     void setRelayName(int[] ides, String[] customNames);
     void switchRelay(int id, boolean value);
 }

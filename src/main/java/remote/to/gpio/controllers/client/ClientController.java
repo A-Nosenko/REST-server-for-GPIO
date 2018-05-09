@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import remote.to.gpio.models.relay.Relay;
+import remote.to.gpio.models.relay.RelayReport;
 import remote.to.gpio.services.mode.ModeService;
 import remote.to.gpio.services.relay.RelaysService;
 import static remote.to.gpio.values.Constants.*;
@@ -38,9 +38,9 @@ public class ClientController {
 
         switch (mode) {
             case "relay" :
-                List<Relay> relays = relaysService.getRelays();
-                ModelAndView modelAndView = new ModelAndView("clientRelays", "relaysList", relays);
-                logger.info(LOG_MARKER  + "\tRelays count = " + relays.size());
+                List<RelayReport> relayReports = relaysService.getRelays();
+                ModelAndView modelAndView = new ModelAndView("clientRelays", "relaysList", relayReports);
+                logger.info(LOG_MARKER  + "\tRelays count = " + relayReports.size());
                 return modelAndView;
 
             default:
@@ -52,9 +52,6 @@ public class ClientController {
     public ModelAndView switchRelay(@RequestParam(value = "id")int id,
                                   @RequestParam(value = "status")boolean status) {
         relaysService.switchRelay(id, status);
-        List<Relay> relays = relaysService.getRelays();
-        ModelAndView modelAndView = new ModelAndView("clientRelays", "relaysList", relays);
-        logger.info(LOG_MARKER  + "\tRelays count = " + relays.size());
-        return modelAndView;
+        return clientEnterPoint();
     }
 }

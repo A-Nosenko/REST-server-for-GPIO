@@ -3,9 +3,11 @@ package remote.to.gpio.services.relay;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import remote.to.gpio.models.relay.Relay;
+import remote.to.gpio.models.relay.RelayReport;
 import remote.to.gpio.models.relay.RelaysListHolder;
 import remote.to.gpio.tools.PropertyHandler;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
@@ -21,8 +23,11 @@ public class RelaysServiceImpl implements RelaysService {
     private RelaysListHolder relaysListHolder = RelaysListHolder.getHolder();
 
     @Override
-    public List<Relay> getRelays(){
-        return relaysListHolder.getRelaysList();
+    public List<RelayReport> getRelays(){
+        List<Relay> relays = relaysListHolder.getRelaysList();
+        List<RelayReport> relayReports = new ArrayList<>();
+        relays.forEach((relay) -> relayReports.add(new RelayReport(relay)));
+        return relayReports;
     }
 
     @Override
