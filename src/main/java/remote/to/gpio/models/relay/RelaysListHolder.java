@@ -89,4 +89,15 @@ public class RelaysListHolder {
         }
         return relay.toggle(status);
     }
+
+    public int count() {
+        return relaysList.size();
+    }
+
+    public Relay getRelay(int i) {
+        if (i < relaysList.size()) {
+            return null;
+        }
+        return relaysList.get(i);
+    }
 }

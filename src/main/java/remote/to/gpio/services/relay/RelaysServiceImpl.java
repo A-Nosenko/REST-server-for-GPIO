@@ -31,6 +31,12 @@ public class RelaysServiceImpl implements RelaysService {
     }
 
     @Override
+    public RelayReport getRelay(int i){
+        Relay relay = relaysListHolder.getRelay(i);
+        return new RelayReport(relay);
+    }
+
+    @Override
     public void setRelayName(int[] ides, String[] customNames) {
         Properties properties = PropertyHandler.read(RELAY_NAMES);
         if (ides.length != customNames.length) {
@@ -49,5 +55,10 @@ public class RelaysServiceImpl implements RelaysService {
         properties.setProperty(String.valueOf(id),
                 relaysListHolder.switchRelay(id, status) ? "On" : "Off");
         PropertyHandler.write(properties, RELAY_STATES);
+    }
+
+    @Override
+    public int count() {
+        return relaysListHolder.count();
     }
 }

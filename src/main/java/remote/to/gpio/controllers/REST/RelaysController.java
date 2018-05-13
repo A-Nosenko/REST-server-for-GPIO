@@ -9,10 +9,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import remote.to.gpio.models.relay.RelayReport;
 import remote.to.gpio.services.relay.RelaysService;
 
-import java.util.List;
 
 /**
  * @author Anatolii Nosenko
@@ -24,14 +22,18 @@ public class RelaysController {
     @Autowired
     RelaysService relaysService;
 
-    @RequestMapping(method = RequestMethod.GET, value = "/getRelays", produces = MediaType.APPLICATION_JSON_VALUE)
-    public JsonObject getRelays(){
-        List<RelayReport> relayReports = relaysService.getRelays();
+    @RequestMapping(method = RequestMethod.GET, value = "/getRelay", produces = MediaType.APPLICATION_JSON_VALUE)
+    public JsonObject getRelay(@RequestParam(value = "id")int id){
         final Gson gson = new Gson();
         JsonObject json = new JsonObject();
-        JsonElement jsonElement = gson.toJsonTree(relayReports);
-        json.add("relays", jsonElement);
+        JsonElement jsonElement = gson.toJsonTree(relaysService.getRelay(id));
+        json.add("relay", jsonElement);
         return json;
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/getRelaysCount", produces = MediaType.APPLICATION_JSON_VALUE)
+    public int getRelaysCount(){
+        return relaysService.count();
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/setRelaysNames")

@@ -10,6 +10,8 @@ import java.util.List;
  */
 public interface RelaysService {
     List<RelayReport> getRelays();
+    RelayReport getRelay(int i);
     void setRelayName(int[] ides, String[] customNames);
     void switchRelay(int id, boolean value);
+    int count();
 }
