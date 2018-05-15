@@ -25,33 +25,33 @@ public class RelaysListHolder {
 
     private RelaysListHolder(){
         super();
-        //final Operator operator = Initializer.initOperator();
-        //final GpioController gpio = operator.getGpioController();
+        final Operator operator = Initializer.initOperator();
+        final GpioController gpio = operator.getGpioController();
         List<Relay> relays = new ArrayList<>();
 
-        //GpioPinDigitalOutput[] pins = (GpioPinDigitalOutput[])gpio.getProvisionedPins().toArray();
+        GpioPinDigitalOutput[] pins = (GpioPinDigitalOutput[])gpio.getProvisionedPins().toArray();
 
         Properties namesProperties = PropertyHandler.read(RELAY_NAMES);
         Properties statesProperties = PropertyHandler.read(RELAY_STATES);
         String customName;
         boolean state;
 
-//        for (int i = 0; i < pins.length; i++) {
-//            customName = namesProperties.getProperty(String.valueOf(i));
-//            state = "On".equals(statesProperties.getProperty(String.valueOf(i)));
-//            if (state) {
-//                pins[i].high();
-//            } else {
-//                pins[i].low();
-//            }
-//            if ((state && !pins[i].isHigh()) || (state && !pins[i].isLow())) {
-//                logger.error(LOG_MARKER + "Relay toggle error! \n" + pins[i]);
-//                throw new RuntimeException();
-//            }
-//            relays.add(new Relay(i, pins[i].getName(), customName, state, pins[i]));
-//        }
-//        relays.sort(Relay::compareTo);
-//
+        for (int i = 0; i < pins.length; i++) {
+            customName = namesProperties.getProperty(String.valueOf(i));
+            state = "On".equals(statesProperties.getProperty(String.valueOf(i)));
+            if (state) {
+                pins[i].high();
+            } else {
+                pins[i].low();
+            }
+            if ((state && !pins[i].isHigh()) || (state && !pins[i].isLow())) {
+                logger.error(LOG_MARKER + "Relay toggle error! \n" + pins[i]);
+                throw new RuntimeException();
+            }
+            relays.add(new Relay(pins[i].getName(), customName, state, pins[i]));
+        }
+        relays.sort(Relay::compareTo);
+
         relaysList =  relays;
     }
 
@@ -70,22 +70,25 @@ public class RelaysListHolder {
     }
 
     public void setRelayName(int id, String name) {
-        for (Relay relay : relaysList) {
-            if (relay.getId() == id) {
-                relay.setCustomName(name);
-            }
+        if (id < relaysList.size()) {
+            return;
         }
+        Relay relay = relaysList.get(id);
+        if (relay == null) {
+            logger.error(LOG_MARKER + "\tRelay not found!");
+            return;
+        }
+        relay.setCustomName(name);
     }
 
     public boolean switchRelay(int id, boolean status) {
-        Relay relay = null;
-        for (Relay relay1 : relaysList) {
-            if (relay1.getId() == id) {
-                relay = relay1;
-            }
+        if (id < relaysList.size()) {
+            return false;
         }
+        Relay relay = relaysList.get(id);
         if (relay == null) {
             logger.error(LOG_MARKER + "\tRelay not found!");
+            return false;
         }
         return relay.toggle(status);
     }
@@ -96,6 +99,7 @@ public class RelaysListHolder {
 
     public Relay getRelay(int i) {
         if (i < relaysList.size()) {
+            logger.error(LOG_MARKER + "\tRelay not found!");
             return null;
         }
         return relaysList.get(i);

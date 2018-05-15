@@ -15,26 +15,16 @@ public class Relay implements Comparable<Relay> {
 
     private static final Logger logger = LoggerFactory.getLogger(Relay.class);
 
-    private int id;
     private final String technicalName;
     private String customName;
     private boolean enabled;
     private GpioPinDigitalOutput pin;
 
-    public Relay(int id, String technicalName, String customName, boolean enabled, GpioPinDigitalOutput pin) {
-        this.id = id;
+    public Relay(String technicalName, String customName, boolean enabled, GpioPinDigitalOutput pin) {
         this.technicalName = technicalName;
         this.customName = customName;
         this.enabled = enabled;
         this.pin = pin;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getTechnicalName() {
