@@ -1,6 +1,7 @@
 package remote.to.gpio.operations;
 
 import com.pi4j.io.gpio.GpioController;
+import com.pi4j.io.gpio.GpioPinDigitalOutput;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -13,4 +14,5 @@ import org.slf4j.LoggerFactory;
 public interface Operator {
     Logger logger = LoggerFactory.getLogger(Operator.class);
     GpioController getGpioController();
+    GpioPinDigitalOutput[] getPins();
 }

@@ -1,7 +1,6 @@
 package remote.to.gpio.operations.orange;
 
-import com.pi4j.io.gpio.GpioController;
-import com.pi4j.io.gpio.GpioFactory;
+import com.pi4j.io.gpio.*;
 import com.pi4j.platform.Platform;
 import com.pi4j.platform.PlatformAlreadyAssignedException;
 import com.pi4j.platform.PlatformManager;
@@ -21,5 +20,20 @@ public class OperatorOrangeImpl implements Operator {
             logger.error(Constants.LOG_MARKER + e.getMessage());
         }
         return GpioFactory.getInstance();
+    }
+
+    @Override
+    public GpioPinDigitalOutput[] getPins() {
+        GpioController gpioController = getGpioController();
+        Pin[] outPins = OrangePiPin.allPins(PinMode.DIGITAL_OUTPUT);
+        int count = outPins.length;
+        if (count < 1) {
+            return null;
+        }
+        GpioPinDigitalOutput[] pins = new GpioPinDigitalOutput[outPins.length];
+        for (int i = 0; i < count; i++) {
+            pins[i] = gpioController.provisionDigitalOutputPin(outPins[i]);
+        }
+        return pins;
     }
 }

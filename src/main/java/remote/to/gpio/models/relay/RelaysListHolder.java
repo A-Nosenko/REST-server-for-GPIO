@@ -1,7 +1,6 @@
 package remote.to.gpio.models.relay;
 
 import com.pi4j.io.gpio.*;
-import com.pi4j.io.gpio.impl.GpioControllerImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import remote.to.gpio.operations.Initializer;
@@ -26,10 +25,9 @@ public class RelaysListHolder {
     private RelaysListHolder(){
         super();
         final Operator operator = Initializer.initOperator();
-        final GpioController gpio = operator.getGpioController();
         List<Relay> relays = new ArrayList<>();
 
-        GpioPinDigitalOutput[] pins = (GpioPinDigitalOutput[])gpio.getProvisionedPins().toArray();
+        GpioPinDigitalOutput[] pins = operator.getPins();
 
         Properties namesProperties = PropertyHandler.read(RELAY_NAMES);
         Properties statesProperties = PropertyHandler.read(RELAY_STATES);
