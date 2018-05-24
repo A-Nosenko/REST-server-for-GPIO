@@ -28,7 +28,9 @@ public class RelaysListHolder {
         List<Relay> relays = new ArrayList<>();
 
         GpioPinDigitalOutput[] pins = operator.getPins();
-
+        if (pins == null) {
+            return;
+        }
         Properties namesProperties = PropertyHandler.read(RELAY_NAMES);
         Properties statesProperties = PropertyHandler.read(RELAY_STATES);
         String customName;

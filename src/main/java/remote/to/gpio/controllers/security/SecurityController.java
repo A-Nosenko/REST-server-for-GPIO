@@ -14,7 +14,7 @@ import remote.to.gpio.models.user.User;
 @Controller
 public class SecurityController {
 
-    @RequestMapping(method = RequestMethod.GET, value = "/login")
+    @RequestMapping(method = RequestMethod.GET, value = "login")
     public String login(User user, ModelMap modelMap, Model model, String error) {
 
         modelMap.put("user", user);

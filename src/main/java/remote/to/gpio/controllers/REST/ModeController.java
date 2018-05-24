@@ -19,12 +19,12 @@ public class ModeController {
     @Autowired
     ModeService modeService;
 
-    @RequestMapping(method = RequestMethod.GET, value = "/getMode", produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.GET, value = "getMode", produces = MediaType.APPLICATION_JSON_VALUE)
     public JsonObject getMode(){
         return getJsonObject();
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/setMode")
+    @RequestMapping(method = RequestMethod.POST, value = "setMode")
     public void setMode(@RequestParam(value = "mode")String mode){
         modeService.setMode(mode);
     }

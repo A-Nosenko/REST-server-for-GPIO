@@ -22,7 +22,7 @@ public class RelaysController {
     @Autowired
     RelaysService relaysService;
 
-    @RequestMapping(method = RequestMethod.GET, value = "/getRelay", produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.GET, value = "getRelay", produces = MediaType.APPLICATION_JSON_VALUE)
     public JsonObject getRelay(@RequestParam(value = "id")int id){
         final Gson gson = new Gson();
         JsonObject json = new JsonObject();
@@ -31,12 +31,12 @@ public class RelaysController {
         return json;
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/getRelaysCount", produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.GET, value = "getRelaysCount", produces = MediaType.APPLICATION_JSON_VALUE)
     public int getRelaysCount(){
         return relaysService.count();
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "/setRelaysNames")
+    @RequestMapping(method = RequestMethod.POST, value = "setRelaysNames")
     public void setRelaysNames(@RequestParam(value = "ides")int[] ides,
                                @RequestParam(value = "customNames")String[] customNames){
         relaysService.setRelayName(ides, customNames);

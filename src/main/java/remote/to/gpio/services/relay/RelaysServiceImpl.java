@@ -26,6 +26,9 @@ public class RelaysServiceImpl implements RelaysService {
     public List<RelayReport> getRelays(){
         List<Relay> relays = relaysListHolder.getRelaysList();
         List<RelayReport> relayReports = new ArrayList<>();
+        if (relays == null) {
+            return relayReports;
+        }
         relays.forEach((relay) -> relayReports.add(new RelayReport(relay)));
         return relayReports;
     }
