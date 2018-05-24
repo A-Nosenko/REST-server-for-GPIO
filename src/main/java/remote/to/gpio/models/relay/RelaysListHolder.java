@@ -22,11 +22,12 @@ public class RelaysListHolder {
     private static final Logger logger = LoggerFactory.getLogger(RelaysListHolder.class);
     private static RelaysListHolder holder;
 
+    private List<Relay> relaysList;
+
     private RelaysListHolder(){
         super();
         final Operator operator = Initializer.initOperator();
-        List<Relay> relays = new ArrayList<>();
-
+        relaysList = new ArrayList<>();
         GpioPinDigitalOutput[] pins = operator.getPins();
         if (pins == null) {
             return;
@@ -48,14 +49,10 @@ public class RelaysListHolder {
                 logger.error(LOG_MARKER + "Relay toggle error! \n" + pins[i]);
                 throw new RuntimeException();
             }
-            relays.add(new Relay(pins[i].getName(), customName, state, pins[i]));
+            relaysList.add(new Relay(pins[i].getName(), customName, state, pins[i]));
         }
-        relays.sort(Relay::compareTo);
-
-        relaysList =  relays;
+        relaysList.sort(Relay::compareTo);
     }
-
-    private List<Relay> relaysList;
 
     public static RelaysListHolder getHolder() {
         if (holder == null) {
