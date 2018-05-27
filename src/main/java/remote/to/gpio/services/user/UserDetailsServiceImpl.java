@@ -5,7 +5,6 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import remote.to.gpio.models.user.User;
 import remote.to.gpio.tools.PropertyHandler;
 
 import java.util.HashSet;
@@ -29,13 +28,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             return null;
         }
 
-        User user = new User();
-        user.setLogin(login);
-        user.setPassword(properties.getProperty("password"));
         Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         grantedAuthorities.add(new SimpleGrantedAuthority("ADMIN"));
 
         return new org.springframework.security.core.userdetails
-                .User(user.getLogin(), user.getPassword(), grantedAuthorities);
+                .User(login, properties.getProperty("password"), grantedAuthorities);
     }
 }

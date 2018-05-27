@@ -19,9 +19,10 @@
 <table width="90%" align="center">
     <thead>
     <tr>
-        <td width="25%"></td>
-        <td width="50%"></td>
-        <td width="25%"></td>
+        <td width="10%"></td>
+        <td width="10%"></td>
+        <td width="80%"></td>
+        <td width="10%"></td>
 
     </tr>
     </thead>
@@ -30,10 +31,9 @@
         <tr>
             <td>
                 <h3>${relay.technicalName}</h3> <br/>
-
-                <br/>
-
-                <img src="${relay.enabled} ? '/resources/images/on.png' : '/resources/images/off.png'"/>
+            </td>
+            <td>
+                <img width="100%" src=${relay.enabled ? "/resources/images/on.png" : "/resources/images/off.png"}/>
             </td>
 
             <td>
@@ -42,7 +42,7 @@
             </td>
 
             <td>
-                <sf:form action="${contextPath}/switchRelay" method="post">
+                <sf:form action="/switchRelay" method="post">
                     <input type="hidden" name="id" value=${relay.id}>
                     <input type="hidden" name="status" value=${relay.enabled ? false : true}>
                     <button type="submit" class="button">${relay.enabled ? "Off" : "On"}</button>

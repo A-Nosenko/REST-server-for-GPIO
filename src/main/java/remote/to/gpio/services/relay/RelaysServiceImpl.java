@@ -23,20 +23,23 @@ public class RelaysServiceImpl implements RelaysService {
     private RelaysListHolder relaysListHolder = RelaysListHolder.getHolder();
 
     @Override
-    public List<RelayReport> getRelays(){
+    public List<RelayReport> getRelayReports(){
         List<Relay> relays = relaysListHolder.getRelaysList();
         List<RelayReport> relayReports = new ArrayList<>();
         if (relays == null) {
             return relayReports;
         }
-        relays.forEach((relay) -> relayReports.add(new RelayReport(relay)));
+        int i = 0;
+        for (Relay relay : relays) {
+            relayReports.add(new RelayReport(i++, relay));
+        }
         return relayReports;
     }
 
     @Override
     public RelayReport getRelay(int i){
         Relay relay = relaysListHolder.getRelay(i);
-        return new RelayReport(relay);
+        return new RelayReport(i, relay);
     }
 
     @Override
@@ -54,10 +57,8 @@ public class RelaysServiceImpl implements RelaysService {
 
     @Override
     public void switchRelay(int id, boolean status) {
-        Properties properties = PropertyHandler.read(RELAY_STATES);
-        properties.setProperty(String.valueOf(id),
-                relaysListHolder.switchRelay(id, status) ? "On" : "Off");
-        PropertyHandler.write(properties, RELAY_STATES);
+        logger.info(LOG_MARKER + "Relays service is activated." + LOG_MARKER);
+        relaysListHolder.switchRelay(id, status);
     }
 
     @Override

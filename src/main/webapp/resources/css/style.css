@@ -70,8 +70,8 @@ button.button_reduced {
 }
 
 button.button {
-    min-width: 180px;
-    min-height: 50px;
+    min-width: 100px;
+    min-height: 30px;
     position: relative;
     display: inline-block;
     font-size: 90%;

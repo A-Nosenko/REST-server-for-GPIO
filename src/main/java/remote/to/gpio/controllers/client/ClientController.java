@@ -38,7 +38,7 @@ public class ClientController {
 
         switch (mode) {
             case "relay" :
-                List<RelayReport> relayReports = relaysService.getRelays();
+                List<RelayReport> relayReports = relaysService.getRelayReports();
                 ModelAndView modelAndView = new ModelAndView("clientRelays", "relaysList", relayReports);
                 logger.info(LOG_MARKER  + "\tRelays count = " + relayReports.size());
                 return modelAndView;
@@ -48,9 +48,11 @@ public class ClientController {
         }
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "switchRelay")
+    @RequestMapping(method = RequestMethod.POST, value = "/switchRelay")
     public ModelAndView switchRelay(@RequestParam(value = "id")int id,
-                                  @RequestParam(value = "status")boolean status) {
+                            @RequestParam(value = "status")boolean status) {
+        logger.info(LOG_MARKER + "RequestMethod.POST \n " +
+                "switchRelay(" + id + ", " + status + ")" + LOG_MARKER);
         relaysService.switchRelay(id, status);
         return clientEnterPoint();
     }

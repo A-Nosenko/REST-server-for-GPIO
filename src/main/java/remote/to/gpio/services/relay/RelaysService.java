@@ -9,7 +9,7 @@ import java.util.List;
  * @version 1.0 4/21/2018.
  */
 public interface RelaysService {
-    List<RelayReport> getRelays();
+    List<RelayReport> getRelayReports();
     RelayReport getRelay(int i);
     void setRelayName(int[] ides, String[] customNames);
     void switchRelay(int id, boolean value);

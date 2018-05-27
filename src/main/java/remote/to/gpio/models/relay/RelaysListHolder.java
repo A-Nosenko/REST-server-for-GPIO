@@ -33,23 +33,11 @@ public class RelaysListHolder {
             return;
         }
         Properties namesProperties = PropertyHandler.read(RELAY_NAMES);
-        Properties statesProperties = PropertyHandler.read(RELAY_STATES);
         String customName;
-        boolean state;
 
         for (int i = 0; i < pins.length; i++) {
             customName = namesProperties.getProperty(String.valueOf(i));
-            state = "On".equals(statesProperties.getProperty(String.valueOf(i)));
-            if (state) {
-                pins[i].high();
-            } else {
-                pins[i].low();
-            }
-            if ((state && !pins[i].isHigh()) || (state && !pins[i].isLow())) {
-                logger.error(LOG_MARKER + "Relay toggle error! \n" + pins[i]);
-                throw new RuntimeException();
-            }
-            relaysList.add(new Relay(pins[i].getName(), customName, state, pins[i]));
+            relaysList.add(new Relay(pins[i].getName(), customName, pins[i].isHigh(), pins[i]));
         }
         relaysList.sort(Relay::compareTo);
     }
@@ -79,15 +67,14 @@ public class RelaysListHolder {
     }
 
     public boolean switchRelay(int id, boolean status) {
-        if (id < relaysList.size()) {
+
+        logger.info(LOG_MARKER + "In holder: switchRelay(" + id + ", " + status + ")");
+        if (id >= relaysList.size()) {
+            logger.error(LOG_MARKER + "INCORRECT RELAY ID!" + LOG_MARKER);
             return false;
         }
-        Relay relay = relaysList.get(id);
-        if (relay == null) {
-            logger.error(LOG_MARKER + "\tRelay not found!");
-            return false;
-        }
-        return relay.toggle(status);
+        relaysList.get(id).toggle(status);
+        return false;
     }
 
     public int count() {

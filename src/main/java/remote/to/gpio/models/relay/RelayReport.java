@@ -7,11 +7,13 @@ package remote.to.gpio.models.relay;
  * @version 1.0 5/9/2018.
  */
 public class RelayReport {
+    private final int id;
     private final String technicalName;
     private final String customName;
     private final boolean enabled;
 
-    public RelayReport(Relay relay) {
+    public RelayReport(int id, Relay relay) {
+        this.id = id;
         this.technicalName = relay.getTechnicalName();
         this.customName = relay.getCustomName();
         this.enabled = relay.isEnabled();
@@ -19,6 +21,10 @@ public class RelayReport {
 
     public String getTechnicalName() {
         return technicalName;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getCustomName() {

@@ -12,13 +12,17 @@ import remote.to.gpio.values.Constants;
  * @version 1.0 4/22/2018.
  */
 public class OperatorOrangeImpl implements Operator {
-    @Override
-    public GpioController getGpioController() {
+
+    static {
         try {
             PlatformManager.setPlatform(Platform.ORANGEPI);
         } catch (PlatformAlreadyAssignedException e) {
             logger.error(Constants.LOG_MARKER + e.getMessage());
         }
+    }
+
+    @Override
+    public GpioController getGpioController() {
         return GpioFactory.getInstance();
     }
 
@@ -27,10 +31,8 @@ public class OperatorOrangeImpl implements Operator {
         GpioController gpioController = getGpioController();
         Pin[] outPins = OrangePiPin.allPins(PinMode.DIGITAL_OUTPUT);
         int count = outPins.length;
-        if (count < 1) {
-            return null;
-        }
         GpioPinDigitalOutput[] pins = new GpioPinDigitalOutput[outPins.length];
+
         for (int i = 0; i < count; i++) {
             pins[i] = gpioController.provisionDigitalOutputPin(outPins[i]);
         }
