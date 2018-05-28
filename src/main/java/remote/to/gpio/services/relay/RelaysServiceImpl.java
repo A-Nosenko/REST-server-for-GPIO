@@ -37,7 +37,7 @@ public class RelaysServiceImpl implements RelaysService {
     }
 
     @Override
-    public RelayReport getRelay(int i){
+    public RelayReport getRelayReport(int i){
         Relay relay = relaysListHolder.getRelay(i);
         return new RelayReport(i, relay);
     }
@@ -50,15 +50,16 @@ public class RelaysServiceImpl implements RelaysService {
         }
         for ( int i = 0; i < ides.length; i++) {
             properties.setProperty(String.valueOf(ides[i]), customNames[i]);
-            relaysListHolder.setRelayName(i, customNames[i]);
+            relaysListHolder.getRelay(i).setCustomName(customNames[i]);
         }
         PropertyHandler.write(properties, RELAY_NAMES);
     }
 
+
     @Override
     public void switchRelay(int id, boolean status) {
-        logger.info(LOG_MARKER + "Relays service is activated." + LOG_MARKER);
-        relaysListHolder.switchRelay(id, status);
+        logger.info(LOG_MARKER + "In holder: switchRelay(" + id + ", " + status + ")");
+        relaysListHolder.getRelay(id).toggle(status);
     }
 
     @Override

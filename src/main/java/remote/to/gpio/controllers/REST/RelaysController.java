@@ -26,7 +26,7 @@ public class RelaysController {
     public JsonObject getRelay(@RequestParam(value = "id")int id){
         final Gson gson = new Gson();
         JsonObject json = new JsonObject();
-        JsonElement jsonElement = gson.toJsonTree(relaysService.getRelay(id));
+        JsonElement jsonElement = gson.toJsonTree(relaysService.getRelayReport(id));
         json.add("relay", jsonElement);
         return json;
     }

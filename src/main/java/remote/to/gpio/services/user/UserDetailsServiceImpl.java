@@ -23,12 +23,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
 
         Properties properties = PropertyHandler.read(SECURITY);
+        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
 
         if (!login.equals(properties.getProperty("login"))) {
-            return null;
+            throw new IllegalArgumentException("Illegal login!");
         }
 
-        Set<GrantedAuthority> grantedAuthorities = new HashSet<>();
         grantedAuthorities.add(new SimpleGrantedAuthority("ADMIN"));
 
         return new org.springframework.security.core.userdetails

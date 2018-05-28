@@ -66,23 +66,12 @@ public class RelaysListHolder {
         relay.setCustomName(name);
     }
 
-    public boolean switchRelay(int id, boolean status) {
-
-        logger.info(LOG_MARKER + "In holder: switchRelay(" + id + ", " + status + ")");
-        if (id >= relaysList.size()) {
-            logger.error(LOG_MARKER + "INCORRECT RELAY ID!" + LOG_MARKER);
-            return false;
-        }
-        relaysList.get(id).toggle(status);
-        return false;
-    }
-
     public int count() {
         return relaysList.size();
     }
 
     public Relay getRelay(int i) {
-        if (i < relaysList.size()) {
+        if (i < 0 || i >= relaysList.size()) {
             logger.error(LOG_MARKER + "\tRelay not found!");
             return null;
         }
