@@ -7,9 +7,7 @@ import remote.to.gpio.operations.Initializer;
 import remote.to.gpio.operations.Operator;
 import remote.to.gpio.tools.PropertyHandler;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 import static remote.to.gpio.values.Constants.*;
 
@@ -29,9 +27,33 @@ public class RelaysListHolder {
         final Operator operator = Initializer.initOperator();
         relaysList = new ArrayList<>();
         GpioPinDigitalOutput[] pins = operator.getPins();
-        if (pins == null) {
-            return;
-        }
+        Arrays.sort(pins, new Comparator<GpioPinDigitalOutput>() {
+            @Override
+            public int compare(GpioPinDigitalOutput pin1, GpioPinDigitalOutput pin2) {
+                String line = SPACE;
+
+                if (pin1.getName().split(line).length < 2 || pin2.getName().split(line).length < 2) {
+                    line = UNDERLINE;
+                    if (pin1.getName().split(line).length < 2 || pin2.getName().split(line).length < 2) {
+                        logger.error(LOG_MARKER);
+                        return 0;
+                    }
+                }
+
+                int number1 = 0;
+                int number2 = 0;
+
+                try {
+                    number1 = Integer.valueOf(pin1.getName().split(line)[1]);
+                    number2 = Integer.valueOf(pin2.getName().split(line)[1]);
+                } catch (NumberFormatException e) {
+                    logger.error(e.getMessage());
+                }
+
+                return Integer.compare(number1, number2);
+            }
+        });
+
         Properties namesProperties = PropertyHandler.read(RELAY_NAMES);
         String customName;
 
@@ -39,7 +61,6 @@ public class RelaysListHolder {
             customName = namesProperties.getProperty(String.valueOf(i));
             relaysList.add(new Relay(pins[i].getName(), customName, pins[i].isHigh(), pins[i]));
         }
-        relaysList.sort(Relay::compareTo);
     }
 
     public static RelaysListHolder getHolder() {

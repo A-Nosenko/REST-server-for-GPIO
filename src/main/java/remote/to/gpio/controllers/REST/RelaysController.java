@@ -9,7 +9,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import remote.to.gpio.models.relay.RelayReport;
 import remote.to.gpio.services.relay.RelaysService;
+
+import javax.json.Json;
+import javax.json.JsonArray;
+import javax.json.JsonArrayBuilder;
+import java.util.List;
 
 
 /**
@@ -21,6 +27,15 @@ public class RelaysController {
 
     @Autowired
     RelaysService relaysService;
+
+    @RequestMapping(method = RequestMethod.GET, value = "getRelays", produces = MediaType.APPLICATION_JSON_VALUE)
+    public JsonArray getRelays(){
+        List<RelayReport> relayReports = relaysService.getRelayReports();
+        final Gson gson = new Gson();
+        JsonArrayBuilder builder = Json.createArrayBuilder();
+        relayReports.forEach((report) -> builder.add(gson.toJson(report)));
+        return builder.build();
+    }
 
     @RequestMapping(method = RequestMethod.GET, value = "getRelay", produces = MediaType.APPLICATION_JSON_VALUE)
     public JsonObject getRelay(@RequestParam(value = "id")int id){

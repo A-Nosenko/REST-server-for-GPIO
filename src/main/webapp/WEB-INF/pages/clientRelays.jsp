@@ -10,12 +10,13 @@
 <body>
 <div align="right">
     <h3>Welcome, ${pageContext.request.remoteUser} !</h3>
-    <sf:form action="${contextPath}/logout" method="post">
+    <sf:form action="/logout" method="post">
         <button type="submit" class="button_reduced">Log out</button>
     </sf:form>
 
 </div>
 
+<c:forEach items="${relaysList}" var="relay">
 <table width="90%" align="center">
     <thead>
     <tr>
@@ -26,11 +27,10 @@
 
     </tr>
     </thead>
-    <c:forEach items="${relaysList}" var="relay">
-
         <tr>
             <td>
-                <h3>${relay.technicalName}</h3> <br/>
+                <h3> ${relay.id} </h3>
+                <h4> ${relay.technicalName} </h4>
             </td>
             <td>
                 <img width="100%" src=${relay.enabled ? "/resources/images/on.png" : "/resources/images/off.png"}/>
@@ -48,9 +48,8 @@
                     <button type="submit" class="button">${relay.enabled ? "Off" : "On"}</button>
                 </sf:form>
             </td>
-
-            </div>
         </tr>
+    <hr color="white"/>
     </c:forEach>
 </table>
 </body>
