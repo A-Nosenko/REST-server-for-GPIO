@@ -51,13 +51,13 @@ public class RelaysController {
         return relaysService.count();
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "setRelaysNames")
+    @RequestMapping(method = RequestMethod.GET, value = "setRelaysNames")
     public void setRelaysNames(@RequestParam(value = "ides")int[] ides,
                                @RequestParam(value = "customNames")String[] customNames){
         relaysService.setRelayName(ides, customNames);
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "switch")
+    @RequestMapping(method = RequestMethod.GET, value = "switch")
     public void switchRelay(@RequestParam(value = "id")int id,
                                   @RequestParam(value = "status")boolean status) {
         relaysService.switchRelay(id, status);
