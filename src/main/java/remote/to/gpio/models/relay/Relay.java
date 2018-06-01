@@ -42,14 +42,15 @@ public class Relay {
         this.enabled = enabled;
     }
 
-    public boolean toggle(boolean status) {
-
+    public int toggle(boolean status) {
+        int result = 0;
         if (status) {
             pin.high();
+            result = 1;
         } else {
             pin.low();
         }
         this.setEnabled(pin.isHigh());
-        return status;
+        return result;
     }
 }

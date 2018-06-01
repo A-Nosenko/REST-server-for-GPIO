@@ -43,7 +43,7 @@ public class RelaysServiceImpl implements RelaysService {
     }
 
     @Override
-    public void setRelayName(int[] ides, String[] customNames) {
+    public int setRelayName(int[] ides, String[] customNames) {
         Properties properties = PropertyHandler.read(RELAY_NAMES);
         if (ides.length != customNames.length) {
             logger.error(LOG_MARKER + ides.length + " != " + customNames.length);
@@ -53,13 +53,14 @@ public class RelaysServiceImpl implements RelaysService {
             relaysListHolder.getRelay(i).setCustomName(customNames[i]);
         }
         PropertyHandler.write(properties, RELAY_NAMES);
+        return 1;
     }
 
 
     @Override
-    public void switchRelay(int id, boolean status) {
+    public int switchRelay(int id, boolean status) {
         logger.info(LOG_MARKER + "In holder: switchRelay(" + id + ", " + status + ")");
-        relaysListHolder.getRelay(id).toggle(status);
+        return relaysListHolder.getRelay(id).toggle(status);
     }
 
     @Override
