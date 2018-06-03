@@ -11,7 +11,8 @@ import java.util.List;
 public interface RelaysService {
     List<RelayReport> getRelayReports();
     RelayReport getRelayReport(int i);
-    int setRelayName(int[] ides, String[] customNames);
+    int setRelayNames(int[] ides, String[] customNames);
+    int setRelayName(int id, String customName);
     int switchRelay(int id, boolean value);
     int count();
 }

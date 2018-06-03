@@ -51,12 +51,6 @@ public class RelaysController {
         return relaysService.count();
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "setRelaysNames", produces = MediaType.APPLICATION_JSON_VALUE)
-    public int setRelaysNames(@RequestParam(value = "ides")int[] ides,
-                               @RequestParam(value = "customNames")String[] customNames){
-        return relaysService.setRelayName(ides, customNames);
-    }
-
     @RequestMapping(method = RequestMethod.GET, value = "switch")
     public int switchRelay(@RequestParam(value = "id")int id,
                                   @RequestParam(value = "status")boolean status) {

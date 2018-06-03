@@ -11,6 +11,8 @@ import org.springframework.web.servlet.ModelAndView;
 import remote.to.gpio.models.relay.RelayReport;
 import remote.to.gpio.services.mode.ModeService;
 import remote.to.gpio.services.relay.RelaysService;
+import remote.to.gpio.services.user.SecurityService;
+
 import static remote.to.gpio.values.Constants.*;
 
 import java.util.List;
@@ -27,6 +29,9 @@ public class ClientController {
 
     @Autowired
     RelaysService relaysService;
+
+    @Autowired
+    SecurityService securityService;
 
     private static final Logger logger = LoggerFactory.getLogger(ClientController.class);
 
@@ -54,6 +59,55 @@ public class ClientController {
         logger.info(LOG_MARKER + "RequestMethod.POST \n " +
                 "switchRelay(" + id + ", " + status + ")" + LOG_MARKER);
         relaysService.switchRelay(id, status);
+        return clientEnterPoint();
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/settingRelayNames")
+    public ModelAndView getSettingRelayNames() {
+        List<RelayReport> relayReports = relaysService.getRelayReports();
+        return new ModelAndView("settingRelayNames", "relaysList", relayReports);
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/setRelayNames")
+     public ModelAndView setRelayNames(@RequestParam(value = "ides")int[] ides,
+                                        @RequestParam(value = "customNames")String[] customNames){
+        relaysService.setRelayNames(ides, customNames);
+        return getSettingRelayNames();
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/setRelayName")
+    public ModelAndView setRelayName(@RequestParam(value = "id")int id,
+                                       @RequestParam(value = "customName")String customName){
+        relaysService.setRelayName(id, customName);
+        return getSettingRelayNames();
+    }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/settingUserData")
+    public ModelAndView getSettingUserData() {
+        return new ModelAndView("settingUserData");
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/updateUserData")
+    public ModelAndView updateUserData(@RequestParam(value = "login")String login,
+                                       @RequestParam(value = "newLogin")String newLogin,
+                                       @RequestParam(value = "password")String password,
+                                       @RequestParam(value = "newPassword")String newPassword,
+                                       @RequestParam(value = "newPasswordRe")String newPasswordRe) {
+        if (newPassword == null || !newPassword.equals(newPasswordRe)) {
+            return new ModelAndView("settingUserData", "error", "Passwords not equals!");
+        }
+
+        if (newLogin == null || newLogin.length() < 1) {
+            return new ModelAndView("settingUserData", "error", "New login too short!");
+        }
+
+        if (newLogin.length() > 100) {
+            return new ModelAndView("settingUserData", "error", "New login too long!");
+        }
+
+        if (!securityService.updatePersonalData(login, newLogin, password, newPassword)) {
+            return new ModelAndView("settingUserData", "error", "Password incorrect!");
+        }
         return clientEnterPoint();
     }
 }

@@ -30,7 +30,11 @@ public class SecurityServiceImpl implements SecurityService {
     private UserDetailsService userDetailsService;
 
     @Override
-    public void updatePersonalData(String login, String newLogin, String password, String newPassword) {
+    public boolean updatePersonalData(String login, String newLogin, String password, String newPassword) {
+
+        if (login == null || newLogin == null || password == null || newPassword == null) {
+            return false;
+        }
 
         Properties properties = PropertyHandler.read(SECURITY);
 
@@ -40,7 +44,10 @@ public class SecurityServiceImpl implements SecurityService {
             properties.setProperty("password", PasswordParser.hidePassword(newPassword));
 
             PropertyHandler.write(properties, SECURITY);
+            autoLogin(newLogin, newPassword);
+            return true;
         }
+        return false;
     }
 
     @Override

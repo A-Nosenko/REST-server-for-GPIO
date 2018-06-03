@@ -16,6 +16,18 @@
 
 </div>
 
+<div align="left">
+
+    <sf:form action="/settingUserData" method="get">
+        <button type="submit" class="button">User setting</button>
+    </sf:form>
+
+    <sf:form action="/settingRelayNames" method="get">
+        <button type="submit" class="button">Relays setting</button>
+    </sf:form>
+
+</div>
+
 <c:forEach items="${relaysList}" var="relay">
 <table width="90%" align="center">
     <thead>
