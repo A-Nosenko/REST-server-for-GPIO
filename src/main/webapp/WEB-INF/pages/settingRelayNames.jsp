@@ -35,7 +35,7 @@
     </td>
     <sf:form action="/setRelayName" method="post">
     <td>
-      <input type="text" name="customName" value=${relay.customName}>
+      <textarea cols="100" rows="3"textarea name="customName" >${relay.customName}</textarea>
     </td>
 
     <td>

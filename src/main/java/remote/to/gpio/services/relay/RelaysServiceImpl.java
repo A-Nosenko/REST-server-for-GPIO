@@ -49,6 +49,9 @@ public class RelaysServiceImpl implements RelaysService {
             logger.error(LOG_MARKER + ides.length + " != " + customNames.length);
         }
         for ( int i = 0; i < ides.length; i++) {
+            if (!validateRelayName(customNames[i])) {
+                continue;
+            }
             properties.setProperty(String.valueOf(ides[i]), customNames[i]);
             relaysListHolder.getRelay(i).setCustomName(customNames[i]);
         }
@@ -58,6 +61,9 @@ public class RelaysServiceImpl implements RelaysService {
 
     @Override
     public int setRelayName(int id, String customName) {
+        if (!validateRelayName(customName)) {
+            return -1;
+        }
         Properties properties = PropertyHandler.read(RELAY_NAMES);
 
         properties.setProperty(String.valueOf(id), customName);
@@ -76,5 +82,12 @@ public class RelaysServiceImpl implements RelaysService {
     @Override
     public int count() {
         return relaysListHolder.count();
+    }
+
+    private boolean validateRelayName(String name) {
+        if (name == null || name.isEmpty() || name.length() > 500) {
+            return false;
+        }
+        return true;
     }
 }
