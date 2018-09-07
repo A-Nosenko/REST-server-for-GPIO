@@ -3,6 +3,8 @@ package remote.to.gpio.controllers.REST;
 import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +19,8 @@ import javax.json.JsonArray;
 import javax.json.JsonArrayBuilder;
 import java.util.List;
 
+import static remote.to.gpio.values.Constants.LOG_MARKER;
+
 
 /**
  * @author Anatolii Nosenko
@@ -24,6 +28,8 @@ import java.util.List;
  */
 @RestController
 public class RelaysController {
+
+    private static final Logger LOG = LoggerFactory.getLogger(RelaysController.class);
 
     @Autowired
     RelaysService relaysService;
@@ -51,9 +57,14 @@ public class RelaysController {
         return relaysService.count();
     }
 
+
     @RequestMapping(method = RequestMethod.GET, value = "switch")
     public int switchRelay(@RequestParam(value = "id")int id,
-                                  @RequestParam(value = "status")boolean status) {
-        return relaysService.switchRelay(id, status);
+                           @RequestParam(value = "status")boolean status) {
+        LOG.info(id + " switch " + status);
+        if (!status) {
+            return relaysService.switchRelayOff(id);
+        }
+        return relaysService.switchRelayOn(id);
     }
 }

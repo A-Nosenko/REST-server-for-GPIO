@@ -12,9 +12,9 @@ import remote.to.gpio.models.relay.RelayReport;
 import remote.to.gpio.services.mode.ModeService;
 import remote.to.gpio.services.relay.RelaysService;
 import remote.to.gpio.services.user.SecurityService;
+import remote.to.gpio.values.Constants;
 
 import static remote.to.gpio.values.Constants.*;
-
 import java.util.List;
 
 /**
@@ -33,19 +33,19 @@ public class ClientController {
     @Autowired
     SecurityService securityService;
 
-    private static final Logger logger = LoggerFactory.getLogger(ClientController.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ClientController.class);
 
     @RequestMapping(method = RequestMethod.GET, value = "/")
     public ModelAndView clientEnterPoint() {
 
         String mode = modeService.getMode();
-        logger.info(LOG_MARKER + "\tMODE = " + mode);
+        LOG.info(LOG_MARKER + "\tMODE = " + mode);
 
         switch (mode) {
             case "relay" :
                 List<RelayReport> relayReports = relaysService.getRelayReports();
                 ModelAndView modelAndView = new ModelAndView("clientRelays", "relaysList", relayReports);
-                logger.info(LOG_MARKER  + "\tRelays count = " + relayReports.size());
+                LOG.info(LOG_MARKER + "\tRelays count = " + relayReports.size());
                 return modelAndView;
 
             default:
@@ -54,11 +54,33 @@ public class ClientController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/switchRelay")
-    public ModelAndView switchRelay(@RequestParam(value = "id")int id,
-                            @RequestParam(value = "status")boolean status) {
-        logger.info(LOG_MARKER + "RequestMethod.POST \n " +
+    public ModelAndView switchRelayOn(@RequestParam(value = "id")int id,
+                            @RequestParam(value = "status")boolean status,
+                            @RequestParam(value = "hour")int hour,
+                            @RequestParam(value = "min")int min) {
+        LOG.info("SWITCH: " + id + " ==> " + status + " ## " + hour + " : " + min);
+        if (!status) {
+            relaysService.switchRelayOff(id);
+            return clientEnterPoint();
+        }
+        int timeToGo;
+        timeToGo = hour * 60 * 60 + min * 60;
+        if (timeToGo <= 0) {
+            LOG.info("SWITCH: " + id + " ==> " + status + " ## " + "Constants.MIN_TIME = " + Constants.MIN_TIME );
+            relaysService.switchRelayOn(id, Constants.MIN_TIME);
+            return clientEnterPoint();
+        }
+        LOG.info(LOG_MARKER + "RequestMethod.POST \n " +
                 "switchRelay(" + id + ", " + status + ")" + LOG_MARKER);
-        relaysService.switchRelay(id, status);
+        relaysService.switchRelayOn(id, timeToGo);
+        return clientEnterPoint();
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/addTime")
+    public ModelAndView addTime(@RequestParam(value = "id")int id,
+                                @RequestParam(value = "hour")int hour,
+                                @RequestParam(value = "min")int min){
+        relaysService.addTime(id, hour * 60 * 60 + min * 60);
         return clientEnterPoint();
     }
 

@@ -27,7 +27,7 @@ public class PropertyHandler {
         return properties;
     }
 
-    public static void write(Properties properties, String path){
+    public synchronized static void write(Properties properties, String path){
         try(FileOutputStream out = new FileOutputStream(path)) {
             properties.store(out, null);
         } catch (IOException e) {

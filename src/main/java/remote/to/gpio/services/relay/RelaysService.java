@@ -13,6 +13,9 @@ public interface RelaysService {
     RelayReport getRelayReport(int i);
     int setRelayNames(int[] ides, String[] customNames);
     int setRelayName(int id, String customName);
-    int switchRelay(int id, boolean value);
+    int switchRelayOn(int id, int timeToGo);
+    int switchRelayOn(int id);
+    int switchRelayOff(int id);
+    boolean addTime(int id, int time);
     int count();
 }

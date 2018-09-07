@@ -14,6 +14,8 @@ public class Constants {
                     "/../webapps/ROOT/WEB-INF/classes/relay_names.properties";
             RELAY_STATES =  System.getProperty("user.dir") +
                     "/../webapps/ROOT/WEB-INF/classes/relay_states.properties";
+            RELAY_TIMES =  System.getProperty("user.dir") +
+                    "/../webapps/ROOT/WEB-INF/classes/relay_times.properties";
             SECURITY = System.getProperty("user.dir") +
                     "/../webapps/ROOT/WEB-INF/classes/security.properties";
 
@@ -21,11 +23,13 @@ public class Constants {
             CURRENT_MODE = "/opt/tomcat/webapps/ROOT/WEB-INF/classes/current_mode.properties";
             RELAY_NAMES = "/opt/tomcat/webapps/ROOT/WEB-INF/classes/relay_names.properties";
             RELAY_STATES = "/opt/tomcat/webapps/ROOT/WEB-INF/classes/relay_states.properties";
+            RELAY_TIMES = "/opt/tomcat/webapps/ROOT/WEB-INF/classes/relay_times.properties";
             SECURITY = "/opt/tomcat/webapps/ROOT/WEB-INF/classes/security.properties";
         } else {
             CURRENT_MODE = null;
             RELAY_NAMES = null;
             RELAY_STATES = null;
+            RELAY_TIMES = null;
             SECURITY = null;
         }
     }
@@ -33,6 +37,7 @@ public class Constants {
     public static final String CURRENT_MODE;
     public static final String RELAY_NAMES;
     public static final String RELAY_STATES;
+    public static final String RELAY_TIMES;
     public static final String SECURITY;
 
 
@@ -41,4 +46,6 @@ public class Constants {
             "\n\n\n\n";
     public static final String SPACE = " ";
     public static final String UNDERLINE = "_";
+
+    public static final int MIN_TIME = 2;
 }

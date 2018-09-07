@@ -1,5 +1,7 @@
 package remote.to.gpio.models.relay;
 
+import java.util.Date;
+
 /**
  * Class to send information about relay to client.
  *
@@ -11,12 +13,14 @@ public class RelayReport {
     private final String technicalName;
     private final String customName;
     private final boolean enabled;
+    private final long time;
 
     public RelayReport(int id, Relay relay) {
         this.id = id;
         this.technicalName = relay.getTechnicalName();
         this.customName = relay.getCustomName();
         this.enabled = relay.isEnabled();
+        this.time = relay.getTime();
     }
 
     public String getTechnicalName() {
@@ -33,5 +37,13 @@ public class RelayReport {
 
     public boolean isEnabled() {
         return enabled;
+    }
+
+    public long getTime() {
+        return time;
+    }
+
+    public Date getDateToGo() {
+        return new Date(getTime() * 1000);
     }
 }

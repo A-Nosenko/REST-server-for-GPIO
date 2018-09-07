@@ -8,10 +8,13 @@ import remote.to.gpio.models.relay.RelaysListHolder;
 import remote.to.gpio.tools.PropertyHandler;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Properties;
 
-import static remote.to.gpio.values.Constants.*;
+import static remote.to.gpio.values.Constants.LOG_MARKER;
+import static remote.to.gpio.values.Constants.RELAY_NAMES;
+import static remote.to.gpio.values.Constants.RELAY_TIMES;
 
 /**
  * @author Anatolii Nosenko
@@ -23,7 +26,7 @@ public class RelaysServiceImpl implements RelaysService {
     private RelaysListHolder relaysListHolder = RelaysListHolder.getHolder();
 
     @Override
-    public List<RelayReport> getRelayReports(){
+    public List<RelayReport> getRelayReports() {
         List<Relay> relays = relaysListHolder.getRelaysList();
         List<RelayReport> relayReports = new ArrayList<>();
         if (relays == null) {
@@ -37,7 +40,7 @@ public class RelaysServiceImpl implements RelaysService {
     }
 
     @Override
-    public RelayReport getRelayReport(int i){
+    public RelayReport getRelayReport(int i) {
         Relay relay = relaysListHolder.getRelay(i);
         return new RelayReport(i, relay);
     }
@@ -48,7 +51,7 @@ public class RelaysServiceImpl implements RelaysService {
         if (ides.length != customNames.length) {
             logger.error(LOG_MARKER + ides.length + " != " + customNames.length);
         }
-        for ( int i = 0; i < ides.length; i++) {
+        for (int i = 0; i < ides.length; i++) {
             if (!validateRelayName(customNames[i])) {
                 continue;
             }
@@ -74,9 +77,52 @@ public class RelaysServiceImpl implements RelaysService {
     }
 
     @Override
-    public int switchRelay(int id, boolean status) {
-        logger.info(LOG_MARKER + "In holder: switchRelay(" + id + ", " + status + ")");
-        return relaysListHolder.getRelay(id).toggle(status);
+    public int switchRelayOn(int id) {
+        logger.info(LOG_MARKER + "SwitchRelayOn(" + id + ")");
+        return relaysListHolder.getRelay(id).toggle(true);
+    }
+
+    @Override
+    public int switchRelayOn(int id, int timeToGo) {
+        logger.info(LOG_MARKER + "SwitchRelayOn(" + id + ")");
+        if (timeToGo > 0) {
+            Relay relay = relaysListHolder.getRelay(id);
+            long time = new Date().getTime() / 1000 + timeToGo;
+            relay.setTime(time);
+            saveTime(id, time);
+            new Thread(() -> {
+                while (relay.getTime() > new Date().getTime() / 1000) {
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        logger.error(LOG_MARKER, e.getMessage());
+                    }
+                }
+                switchRelayOff(id);
+            }).start();
+        }
+        return relaysListHolder.getRelay(id).toggle(true);
+    }
+
+    @Override
+    public boolean addTime(int id, int time) {
+        Relay relay = relaysListHolder.getRelay(id);
+        long currentTime = new Date().getTime() / 1000;
+        if (currentTime > relay.getTime() + 5) {
+            return false;
+        } else {
+            long timeToGo = relay.getTime() + time;
+            relay.setTime(timeToGo);
+            saveTime(id, timeToGo);
+            return true;
+        }
+    }
+
+    @Override
+    public int switchRelayOff(int id) {
+        Relay relay = relaysListHolder.getRelay(id);
+        relay.setTime(0);
+        return relay.toggle(false);
     }
 
     @Override
@@ -89,5 +135,11 @@ public class RelaysServiceImpl implements RelaysService {
             return false;
         }
         return true;
+    }
+
+    private void saveTime(int id, long time) {
+        Properties properties = PropertyHandler.read(RELAY_TIMES);
+        properties.setProperty(String.valueOf(id), String.valueOf(time));
+        PropertyHandler.write(properties, RELAY_TIMES);
     }
 }

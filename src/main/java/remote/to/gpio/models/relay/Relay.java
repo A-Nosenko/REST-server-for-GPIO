@@ -14,6 +14,7 @@ public class Relay {
     private String customName;
     private boolean enabled;
     private GpioPinDigitalOutput pin;
+    private long time;
 
     public Relay(String technicalName, String customName, boolean enabled, GpioPinDigitalOutput pin) {
         this.technicalName = technicalName;
@@ -40,6 +41,14 @@ public class Relay {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public long getTime() {
+        return time;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
     }
 
     public int toggle(boolean status) {

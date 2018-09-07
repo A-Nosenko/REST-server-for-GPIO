@@ -55,11 +55,37 @@ public class RelaysListHolder {
         });
 
         Properties namesProperties = PropertyHandler.read(RELAY_NAMES);
+        Properties timesProperties = PropertyHandler.read(RELAY_TIMES);
         String customName;
+        String time;
+        long timeToGo;
 
         for (int i = 0; i < pins.length; i++) {
             customName = namesProperties.getProperty(String.valueOf(i));
-            relaysList.add(new Relay(pins[i].getName(), customName, pins[i].isHigh(), pins[i]));
+            time = timesProperties.getProperty(String.valueOf(i));
+            try {
+                timeToGo = Long.parseLong(time);
+            } catch (Exception e) {
+                logger.error(LOG_MARKER, e.getMessage());
+                timeToGo = 0;
+            }
+            Relay relay = new Relay(pins[i].getName(), customName, pins[i].isHigh(), pins[i]);
+            relay.setTime(timeToGo);
+            if (relay.getTime() > new Date().getTime() / 1000) {
+                new Thread(() -> {
+                    while (relay.getTime() > new Date().getTime() / 1000) {
+                        try {
+                            Thread.sleep(1000);
+                        } catch (InterruptedException e) {
+                            logger.error(LOG_MARKER, e.getMessage());
+                        }
+                    }
+                    relay.toggle(false);
+                }).start();
+            } else {
+                relay.toggle(false);
+            }
+            relaysList.add(relay);
         }
     }
 
