@@ -16,6 +16,6 @@ public interface RelaysService {
     int switchRelayOn(int id, int timeToGo);
     int switchRelayOn(int id);
     int switchRelayOff(int id);
-    boolean addTime(int id, int time);
+    void addTime(int id, int time);
     int count();
 }

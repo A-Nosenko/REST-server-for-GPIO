@@ -85,37 +85,41 @@ public class RelaysServiceImpl implements RelaysService {
     @Override
     public int switchRelayOn(int id, int timeToGo) {
         logger.info(LOG_MARKER + "SwitchRelayOn(" + id + ")");
-        if (timeToGo > 0) {
-            Relay relay = relaysListHolder.getRelay(id);
-            long time = new Date().getTime() / 1000 + timeToGo;
-            relay.setTime(time);
-            saveTime(id, time);
-            new Thread(() -> {
-                while (relay.getTime() > new Date().getTime() / 1000) {
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        logger.error(LOG_MARKER, e.getMessage());
-                    }
-                }
-                switchRelayOff(id);
-            }).start();
-        }
+        installTimer(id, timeToGo);
         return relaysListHolder.getRelay(id).toggle(true);
     }
 
-    @Override
-    public boolean addTime(int id, int time) {
+    private void installTimer(int id, int timeToGo) {
         Relay relay = relaysListHolder.getRelay(id);
-        long currentTime = new Date().getTime() / 1000;
-        if (currentTime > relay.getTime() + 5) {
-            return false;
-        } else {
-            long timeToGo = relay.getTime() + time;
-            relay.setTime(timeToGo);
-            saveTime(id, timeToGo);
-            return true;
+        if (relay == null || timeToGo <= 0) {
+            return;
         }
+        long time = new Date().getTime() / 1000 + timeToGo;
+        relay.setTime(time);
+        saveTime(id, time);
+        new Thread(() -> {
+            while (relay.getTime() > new Date().getTime() / 1000) {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException e) {
+                    logger.error(LOG_MARKER, e.getMessage());
+                }
+            }
+            switchRelayOff(id);
+        }).start();
+    }
+
+    @Override
+    public void addTime(int id, int time) {
+        Relay relay = relaysListHolder.getRelay(id);
+        if (relay.getTime() == 0) {
+            installTimer(id, time);
+            return;
+        }
+
+        long timeToGo = relay.getTime() + time;
+        relay.setTime(timeToGo);
+        saveTime(id, timeToGo);
     }
 
     @Override

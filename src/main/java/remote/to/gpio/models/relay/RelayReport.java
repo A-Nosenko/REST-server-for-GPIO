@@ -46,4 +46,8 @@ public class RelayReport {
     public Date getDateToGo() {
         return new Date(getTime() * 1000);
     }
+
+    public boolean isWithTimer() {
+        return time > 0;
+    }
 }

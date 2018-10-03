@@ -65,9 +65,9 @@ public class ClientController {
         }
         int timeToGo;
         timeToGo = hour * 60 * 60 + min * 60;
-        if (timeToGo <= 0) {
-            LOG.info("SWITCH: " + id + " ==> " + status + " ## " + "Constants.MIN_TIME = " + Constants.MIN_TIME );
-            relaysService.switchRelayOn(id, Constants.MIN_TIME);
+        if (timeToGo == 0) {
+            LOG.info("SWITCH: " + id + " ==> " + status + " ## ");
+            relaysService.switchRelayOn(id);
             return clientEnterPoint();
         }
         LOG.info(LOG_MARKER + "RequestMethod.POST \n " +
@@ -81,6 +81,7 @@ public class ClientController {
                                 @RequestParam(value = "hour")int hour,
                                 @RequestParam(value = "min")int min){
         relaysService.addTime(id, hour * 60 * 60 + min * 60);
+        LOG.info(LOG_MARKER + "\tTIME ADDED: " + hour + " : " + min);
         return clientEnterPoint();
     }
 

@@ -62,7 +62,7 @@
             </td>
             <sf:form method="post">
             <td>
-                <c:if test="${relay.enabled}">
+                <c:if test="${relay.enabled and relay.withTimer}">
                 Time to go:
                 <fmt:formatDate value="${relay.dateToGo}" pattern="dd-MM-yyyy HH:mm:ss" /></h3>
                 <br/>
