@@ -27,6 +27,18 @@
 
 </div>
 
+<div align="right">
+    <sf:form action="/switchAllRelaysOn" method="post">
+        <button type="submit" class="button">Switch on all</button>
+    </sf:form>
+</div>
+
+<div align="right">
+    <sf:form action="/switchAllRelaysOff" method="post">
+        <button type="submit" class="button">Switch off all</button>
+    </sf:form>
+</div>
+
 <div align="center">
     <sf:form action="/" method="get">
         <button type="submit" class="button">Refresh</button>
@@ -45,50 +57,50 @@
 
     </tr>
     </thead>
-        <tr>
+    <tr>
 
-            <td>
-                <h3> ${relay.id} </h3>
-                <h4> ${relay.technicalName} </h4>
-            </td>
-            <td>
-                <img width="100%" src=${relay.enabled ? "resources/images/on.png" : "resources/images/off.png"} >
-            </td>
+        <td>
+            <h3> ${relay.id} </h3>
+            <h4> ${relay.technicalName} </h4>
+        </td>
+        <td>
+            <img width="100%" src=${relay.enabled ? "resources/images/on.png" : "resources/images/off.png"}>
+        </td>
 
-            <td>
-                <h3>${relay.customName}</h3> <br/>
+        <td>
+            <h3>${relay.customName}</h3> <br/>
 
 
-            </td>
-            <sf:form method="post">
-            <td>
-                <c:if test="${relay.enabled and relay.withTimer}">
+        </td>
+        <sf:form method="post">
+        <td>
+            <c:if test="${relay.enabled and relay.withTimer}">
                 Time to go:
-                <fmt:formatDate value="${relay.dateToGo}" pattern="dd-MM-yyyy HH:mm:ss" /></h3>
+                <fmt:formatDate value="${relay.dateToGo}" pattern="dd-MM-yyyy HH:mm:ss"/></h3>
                 <br/>
                 <br/>
-                </c:if>
-                <label for="hour">HOUR:</label>
-                <input type="number" size="4" id="hour" name="hour" min="0" max="24" step="1" value="0">
-                <label for="min">MIN:</label>
-                <input type="number" size="4" id="min" name="min" min="0" max="59" step="1" value="0">
-                <label for="min">SECOND:</label>
-                <input type="number" size="4" id="sec" name="sec" min="0" max="59" step="1" value="0">
-                <br/>
-                <br/>
-                <c:if test="${relay.enabled}">
-                    <button type="submit" formaction="/addTime" class="button">Add time</button>
-                </c:if>
-            </td>
+            </c:if>
+            <label for="hour">HOUR:</label>
+            <input type="number" size="4" id="hour" name="hour" min="0" max="24" step="1" value="0">
+            <label for="min">MIN:</label>
+            <input type="number" size="4" id="min" name="min" min="0" max="59" step="1" value="0">
+            <label for="min">SECOND:</label>
+            <input type="number" size="4" id="sec" name="sec" min="0" max="59" step="1" value="0">
+            <br/>
+            <br/>
+            <c:if test="${relay.enabled}">
+                <button type="submit" formaction="/addTime" class="button">Add time</button>
+            </c:if>
+        </td>
 
-            <td>
-                <input type="hidden" name="id" value=${relay.id}>
-                <input type="hidden" name="status" value=${relay.enabled ? false : true}>
-                <button type="submit" formaction="/switchRelay" class="button">${relay.enabled ? "Off" : "On"}</button>
-                </sf:form>
-            </td>
+        <td>
+            <input type="hidden" name="id" value=${relay.id}>
+            <input type="hidden" name="status" value=${relay.enabled ? false : true}>
+            <button type="submit" formaction="/switchRelay" class="button">${relay.enabled ? "Off" : "On"}</button>
+            </sf:form>
+        </td>
 
-        </tr>
+    </tr>
     <hr color="white"/>
     </c:forEach>
 </table>

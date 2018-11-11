@@ -12,7 +12,6 @@ import remote.to.gpio.models.relay.RelayReport;
 import remote.to.gpio.services.mode.ModeService;
 import remote.to.gpio.services.relay.RelaysService;
 import remote.to.gpio.services.user.SecurityService;
-import remote.to.gpio.values.Constants;
 
 import static remote.to.gpio.values.Constants.*;
 import java.util.List;
@@ -54,7 +53,7 @@ public class ClientController {
     }
 
     @RequestMapping(method = RequestMethod.POST, value = "/switchRelay")
-    public ModelAndView switchRelayOn(@RequestParam(value = "id")int id,
+    public ModelAndView switchRelay(@RequestParam(value = "id")int id,
                             @RequestParam(value = "status")boolean status,
                             @RequestParam(value = "hour")int hour,
                             @RequestParam(value = "min")int min,
@@ -74,6 +73,18 @@ public class ClientController {
         LOG.info(LOG_MARKER + "RequestMethod.POST \n " +
                 "switchRelay(" + id + ", " + status + ")" + LOG_MARKER);
         relaysService.switchRelayOn(id, timeToGo);
+        return clientEnterPoint();
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/switchAllRelaysOn")
+    public ModelAndView switchAllRelaysOn() {
+        relaysService.switchAllRelaysOn();
+        return clientEnterPoint();
+    }
+
+    @RequestMapping(method = RequestMethod.POST, value = "/switchAllRelaysOff")
+    public ModelAndView switchAllRelaysOff() {
+        relaysService.switchAllRelaysOff();
         return clientEnterPoint();
     }
 

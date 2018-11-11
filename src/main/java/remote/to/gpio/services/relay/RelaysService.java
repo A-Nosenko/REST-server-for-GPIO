@@ -18,4 +18,6 @@ public interface RelaysService {
     int switchRelayOff(int id);
     void addTime(int id, int time);
     int count();
+    void switchAllRelaysOn();
+    void switchAllRelaysOff();
 }

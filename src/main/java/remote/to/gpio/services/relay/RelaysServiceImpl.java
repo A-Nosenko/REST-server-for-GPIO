@@ -98,7 +98,7 @@ public class RelaysServiceImpl implements RelaysService {
         relay.setTime(time);
         saveTime(id, time);
         new Thread(() -> {
-            while (relay.getTime() > new Date().getTime() / 1000) {
+            while (relay.getTime() > new Date().getTime() / 1000 && relay.isEnabled()) {
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
@@ -145,5 +145,15 @@ public class RelaysServiceImpl implements RelaysService {
         Properties properties = PropertyHandler.read(RELAY_TIMES);
         properties.setProperty(String.valueOf(id), String.valueOf(time));
         PropertyHandler.write(properties, RELAY_TIMES);
+    }
+
+    @Override
+    public void switchAllRelaysOn() {
+        relaysListHolder.getRelaysList().forEach(relay -> relay.toggle(true));
+    }
+
+    @Override
+    public void switchAllRelaysOff() {
+        relaysListHolder.getRelaysList().forEach(relay -> relay.toggle(false));
     }
 }

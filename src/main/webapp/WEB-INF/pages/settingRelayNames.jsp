@@ -31,7 +31,7 @@
       <h4> ${relay.technicalName} </h4>
     </td>
     <td>
-      <img width="100%" src=${relay.enabled ? "/resources/images/on.png" : "/resources/images/off.png"}/>
+      <img width="100%" src=${relay.enabled ? "/resources/images/on.png" : "/resources/images/off.png"}>
     </td>
     <sf:form action="/setRelayName" method="post">
     <td>
