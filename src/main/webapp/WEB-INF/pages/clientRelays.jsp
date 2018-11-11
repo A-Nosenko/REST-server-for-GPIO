@@ -39,8 +39,8 @@
     <tr>
         <td width="10%"></td>
         <td width="10%"></td>
+        <td width="30%"></td>
         <td width="40%"></td>
-        <td width="20%"></td>
         <td width="10%"></td>
 
     </tr>
@@ -71,7 +71,9 @@
                 <label for="hour">HOUR:</label>
                 <input type="number" size="4" id="hour" name="hour" min="0" max="24" step="1" value="0">
                 <label for="min">MIN:</label>
-                <input type="number" size="4" id="min" name="min" min="0" max="55" step="5" value="0">
+                <input type="number" size="4" id="min" name="min" min="0" max="59" step="1" value="0">
+                <label for="min">SECOND:</label>
+                <input type="number" size="4" id="sec" name="sec" min="0" max="59" step="1" value="0">
                 <br/>
                 <br/>
                 <c:if test="${relay.enabled}">

@@ -57,14 +57,15 @@ public class ClientController {
     public ModelAndView switchRelayOn(@RequestParam(value = "id")int id,
                             @RequestParam(value = "status")boolean status,
                             @RequestParam(value = "hour")int hour,
-                            @RequestParam(value = "min")int min) {
-        LOG.info("SWITCH: " + id + " ==> " + status + " ## " + hour + " : " + min);
+                            @RequestParam(value = "min")int min,
+                            @RequestParam(value = "sec") int second) {
+        LOG.info("SWITCH: " + id + " ==> " + status + " ## " + hour + " : " + min + " : " +second);
         if (!status) {
             relaysService.switchRelayOff(id);
             return clientEnterPoint();
         }
         int timeToGo;
-        timeToGo = hour * 60 * 60 + min * 60;
+        timeToGo = hour * 60 * 60 + min * 60 + second;
         if (timeToGo == 0) {
             LOG.info("SWITCH: " + id + " ==> " + status + " ## ");
             relaysService.switchRelayOn(id);
@@ -79,8 +80,9 @@ public class ClientController {
     @RequestMapping(method = RequestMethod.POST, value = "/addTime")
     public ModelAndView addTime(@RequestParam(value = "id")int id,
                                 @RequestParam(value = "hour")int hour,
-                                @RequestParam(value = "min")int min){
-        relaysService.addTime(id, hour * 60 * 60 + min * 60);
+                                @RequestParam(value = "min")int min,
+                                @RequestParam(value = "sec") int second){
+        relaysService.addTime(id, hour * 60 * 60 + min * 60 + second);
         LOG.info(LOG_MARKER + "\tTIME ADDED: " + hour + " : " + min);
         return clientEnterPoint();
     }
